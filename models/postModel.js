@@ -6,6 +6,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
+      topic: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
       media_url: {
         type: DataTypes.JSON,
       },
@@ -16,13 +20,9 @@ module.exports = (sequelize, DataTypes) => {
       status:{
         type:DataTypes.ENUM,
         values:["Draft", "Published"],
-        defaultValue: "Published"
+        defaultValue: "Draft"
       },
       commentsNo: {
-        type: DataTypes.INTEGER,
-        defaultValue: 0,
-      },
-      shares: {
         type: DataTypes.INTEGER,
         defaultValue: 0,
       },
@@ -33,10 +33,16 @@ module.exports = (sequelize, DataTypes) => {
       tags: {
         type: DataTypes.STRING,
       },
+      location: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
     },
     {
       tableName: "posts",
     }
   );
-  return Post
+  return Post;
 };
+
+

@@ -10,11 +10,12 @@ const User = db.users;
 
 //OAuthController
 const AppError = require("./appError");
+const { url } = require("../config/cloudinary");
 
-const HOSTNAME = (process.env.NODE_ENV === 'production') ? 'https://circle7.codes' : `http://localhost:${process.env.PORT}`
+const HOSTNAME = (process.env.NODE_ENV === 'production') ? 'https://www.circle7.codes' : `http://localhost:${process.env.PORT}`
 
 //STRATEGIES
-const GoogleStrategy = require("passport-google-oauth2").Strategy;
+const GoogleStrategy = require("passport-google-oauth2").Strategy
 
 const GithubStrategy = require("passport-github2").Strategy;
 
@@ -95,7 +96,7 @@ passport.use(
     {
       clientID: process.env.GITHUB_CLIENT_ID,
       clientSecret: process.env.GITHUB_CLIENT_SECRET,
-      callbackURL: `${HOSTNAME}/api/v1/users/auth/github/callback`,
+      callbackURL: `https://www.circle7.codes/api/v1/users/auth/github/callback`,
 
       scope: ['user:email'],
       passReqToCallback: true,

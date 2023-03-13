@@ -2,8 +2,10 @@ require('express-async-errors')
 const appError = require('../utils/appError')
 const logger = require('../utils/logger')
 const db = require('../models');
+// const { followers } = require('../models');
 const followers = db.followers;
 const User = db.users
+const Profile = db.profile
 
 const follow = async (req,res) => {
     // GET USER TO FOLLOW BY USERNAME
@@ -78,7 +80,52 @@ const unfollow = async (req,res) => {
 }
 
 
+const getUserFollowers = async (req, res) => {
+    const { username } = req.params
+    const user = await User.findOne({
+        where: { username : username }
+    })
+
+    const userFollowers= await followers.findAll({
+        where: { followeeId: user.id },
+        include: [{ 
+            model: User, 
+            attributes: { exclude: ['password', 'email', 'googleId', 'githubId', 'passwordToken', 'passwordResetExpires', 'deletionDate', 'updatedAt'] } 
+        }] 
+    });
+
+    res.status(200).json({
+        status: 'success',
+        results: userFollowers.length,
+        data: userFollowers
+    })
+}
+
+
+// const getUserFollowings = async (req, res) => {
+//     const { username } = req.params
+//     const user = await User.findOne({
+//         where: { username : username }
+//     })
+
+//     const userFollows = await followers.findAll({
+//         where: { userId: user.id },
+//         include: [{ 
+//             model: User,
+//             attributes: { exclude: ['password', 'email', 'googleId', 'githubId', 'passwordToken', 'passwordResetExpires', 'deletionDate', 'updatedAt'] }
+//           }] 
+//     });
+
+//     res.status(200).json({
+//         status: 'success',
+//         results: userFollows.length,
+//         data: userFollows
+//     })
+// }
+
 module.exports = {
     follow,
-    unfollow
+    unfollow,
+    getUserFollowers,
+    // getUserFollowings
 }
